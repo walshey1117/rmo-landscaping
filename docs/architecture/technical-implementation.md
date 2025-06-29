@@ -290,6 +290,189 @@ const TTL = {
 - Versioned endpoints
 - Rate limiting and security measures
 
+## 4.1 Middleware Architecture
+> **Reasoning**: Next.js App Router's built-in middleware system provides powerful, flexible request/response processing with better integration compared to Express. This approach simplifies deployment, reduces dependencies, and maintains consistency with the Next.js ecosystem.
+
+### 4.1.1 Core Middleware Structure
+- **Location**: `/app/middleware.ts`
+- **Execution**: Runs before matching routes
+- **Scope**: Applies to all routes by default
+
+### 4.1.2 Middleware Categories
+
+#### Authentication Middleware
+```typescript
+// app/middleware.ts
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { getToken } from 'next-auth/jwt'
+
+export async function middleware(request: NextRequest) {
+  // Auth check
+  const token = await getToken({ req: request })
+  
+  // Protected routes pattern
+  const isProtectedRoute = request.nextUrl.pathname.startsWith('/dashboard')
+  
+  if (isProtectedRoute && !token) {
+    return NextResponse.redirect(new URL('/auth/signin', request.url))
+  }
+
+  return NextResponse.next()
+}
+
+export const config = {
+  matcher: [
+    '/dashboard/:path*',
+    '/api/:path*',
+  ]
+}
+```
+
+#### API Middleware
+```typescript
+// app/api/middleware.ts
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { rateLimit, corsCheck, validateContentType } from '../lib/middleware'
+
+export async function middleware(request: NextRequest) {
+  // API-specific middleware chain
+  const rateLimitResult = await rateLimit(request)
+  if (rateLimitResult) return rateLimitResult
+  
+  const corsResult = corsCheck(request)
+  if (corsResult) return corsResult
+  
+  const contentTypeResult = validateContentType(request)
+  if (contentTypeResult) return contentTypeResult
+
+  return NextResponse.next()
+}
+
+export const config = {
+  matcher: '/api/:path*'
+}
+```
+
+### 4.1.3 Custom Middleware Functions
+
+#### Rate Limiting
+```typescript
+// lib/middleware/rateLimit.ts
+import { Redis } from '@upstash/redis'
+import { NextRequest, NextResponse } from 'next/server'
+
+export async function rateLimit(request: NextRequest) {
+  const redis = new Redis({
+    url: process.env.REDIS_URL!,
+    token: process.env.REDIS_TOKEN!
+  })
+
+  const ip = request.ip ?? 'anonymous'
+  const key = `ratelimit:${ip}`
+  const limit = 100 // requests
+  const window = 60 * 60 // 1 hour
+
+  const current = await redis.incr(key)
+  if (current === 1) {
+    await redis.expire(key, window)
+  }
+
+  if (current > limit) {
+    return NextResponse.json(
+      { error: 'Too many requests' },
+      { status: 429 }
+    )
+  }
+
+  return null
+}
+```
+
+#### Role-Based Access Control
+```typescript
+// lib/middleware/rbac.ts
+import { NextRequest, NextResponse } from 'next/server'
+import { getToken } from 'next-auth/jwt'
+
+export async function rbacMiddleware(request: NextRequest) {
+  const token = await getToken({ req: request })
+  const path = request.nextUrl.pathname
+  
+  // Role-based route mapping
+  const roleRoutes = {
+    ADMIN: ['/admin', '/dashboard'],
+    MANAGER: ['/dashboard'],
+    FIELD_WORKER: ['/tasks', '/schedule'],
+    CUSTOMER: ['/contracts', '/service-history']
+  }
+
+  if (!token?.role || !canAccess(token.role, path, roleRoutes)) {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 403 }
+    )
+  }
+
+  return null
+}
+```
+
+### 4.1.4 Error Handling Middleware
+```typescript
+// lib/middleware/errorHandler.ts
+import { NextRequest, NextResponse } from 'next/server'
+import { logger } from '../utils/logger'
+
+export function errorHandler(error: Error, request: NextRequest) {
+  logger.error({
+    message: error.message,
+    stack: error.stack,
+    path: request.nextUrl.pathname,
+    method: request.method
+  })
+
+  return NextResponse.json(
+    { error: 'Internal Server Error' },
+    { status: 500 }
+  )
+}
+```
+
+### 4.1.5 Middleware Integration
+```typescript
+// app/api/[...path]/route.ts
+import { createRouteHandler } from 'next-api-handler'
+import { 
+  rateLimit, 
+  rbacMiddleware, 
+  errorHandler,
+  validateRequest 
+} from '../../../lib/middleware'
+
+export const dynamic = 'force-dynamic'
+
+export const { GET, POST, PUT, DELETE } = createRouteHandler({
+  middleware: [
+    rateLimit,
+    rbacMiddleware,
+    validateRequest
+  ],
+  onError: errorHandler
+})
+```
+
+### 4.1.6 Benefits Over Express
+- Native TypeScript support
+- Built-in edge runtime support
+- Integrated with Next.js caching
+- Better deployment optimization
+- Simplified configuration
+- Automatic middleware chaining
+- Built-in response helpers
+- Static analysis support
+
 ## 5. Security Implementation
 > **Reasoning**: Security must be comprehensive and layered. The combination of HTTPS, JWT, input validation, and protection against common web vulnerabilities (XSS, CSRF) provides defense in depth. Rate limiting prevents abuse, while encryption protects sensitive data.
 

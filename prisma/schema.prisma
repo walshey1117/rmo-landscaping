@@ -12,13 +12,25 @@ generator client {
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
-  name          String?
+  name          String?   @db.Text
   password      String
   role          UserRole
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  phone         String?
+  address       Address?
+  company       String?   // For business customers
+  notes         String?   @db.Text
+  preferences   Json?     // For notifications, communication preferences
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now()) @db.Timestamp
+  updatedAt     DateTime  @updatedAt @db.Timestamp
   contracts     Contract[]
   assignments   Assignment[]
+  equipmentAssignments EquipmentAssignment[]
+
+  @@index([role])
+  @@index([email])
+  @@index([active])
+  @@index([createdAt])
 }
 
 enum UserRole {
@@ -34,11 +46,21 @@ model Contract {
   customerId  String
   customer    User      @relation(fields: [customerId], references: [id])
   status      ContractStatus
-  startDate   DateTime
-  endDate     DateTime?
+  startDate   DateTime  @db.Timestamp
+  endDate     DateTime? @db.Timestamp
+  totalValue  Float     @db.Decimal(10, 2)
   services    Service[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  invoices    Invoice[]
+  terms       String?   @db.Text
+  notes       String?   @db.Text
+  documents   Json?     // Store document references/metadata
+  createdAt   DateTime  @default(now()) @db.Timestamp
+  updatedAt   DateTime  @updatedAt @db.Timestamp
+
+  @@index([customerId])
+  @@index([status])
+  @@index([startDate])
+  @@index([endDate])
 }
 
 enum ContractStatus {
@@ -55,10 +77,20 @@ model Service {
   contract    Contract  @relation(fields: [contractId], references: [id])
   type        ServiceType
   frequency   ServiceFrequency
-  price       Float
+  price       Float     @db.Decimal(10, 2)
+  description String    @db.Text
+  area        Area      @relation(fields: [areaId], references: [id])
+  areaId      String
+  estimatedDuration Int // in minutes
+  equipmentNeeded Equipment[]
   schedules   Schedule[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime  @default(now()) @db.Timestamp
+  updatedAt   DateTime  @updatedAt @db.Timestamp
+
+  @@index([contractId])
+  @@index([type])
+  @@index([frequency])
+  @@index([areaId])
 }
 
 enum ServiceType {
@@ -82,12 +114,16 @@ model Schedule {
   id          String    @id @default(cuid())
   serviceId   String
   service     Service   @relation(fields: [serviceId], references: [id])
-  date        DateTime
+  date        DateTime  @db.Timestamp
   status      ScheduleStatus
-  notes       String?
+  notes       String?   @db.Text
   assignments Assignment[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime  @default(now()) @db.Timestamp
+  updatedAt   DateTime  @updatedAt @db.Timestamp
+
+  @@index([serviceId])
+  @@index([date])
+  @@index([status])
 }
 
 enum ScheduleStatus {
@@ -117,4 +153,171 @@ enum AssignmentStatus {
   IN_PROGRESS
   COMPLETED
   REJECTED
+}
+
+// Location and Address Management
+model Address {
+  id            String    @id @default(cuid())
+  street        String
+  city          String
+  state         String
+  zipCode       String
+  country       String    @default("USA")
+  latitude      Float?
+  longitude     Float?
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String    @unique
+  areas         Area[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Area {
+  id            String    @id @default(cuid())
+  name          String
+  description   String?
+  size          Float     // in square feet
+  type          AreaType
+  address       Address   @relation(fields: [addressId], references: [id])
+  addressId     String
+  services      Service[]
+  images        Image[]
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum AreaType {
+  LAWN
+  GARDEN
+  DRIVEWAY
+  TREES
+  LANDSCAPE_BED
+}
+
+// Equipment and Resource Management
+model Equipment {
+  id            String    @id @default(cuid())
+  name          String
+  type          EquipmentType
+  status        EquipmentStatus
+  description   String?
+  serialNumber  String?   @unique
+  purchaseDate  DateTime?
+  lastMaintenance DateTime?
+  nextMaintenance DateTime?
+  assignments   EquipmentAssignment[]
+  services      Service[]  // Services that need this equipment
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum EquipmentType {
+  MOWER
+  TRIMMER
+  BLOWER
+  VEHICLE
+  HAND_TOOL
+  POWER_TOOL
+}
+
+enum EquipmentStatus {
+  AVAILABLE
+  IN_USE
+  MAINTENANCE
+  REPAIR
+  RETIRED
+}
+
+model EquipmentAssignment {
+  id            String    @id @default(cuid())
+  equipment     Equipment @relation(fields: [equipmentId], references: [id])
+  equipmentId   String
+  worker        User      @relation(fields: [workerId], references: [id])
+  workerId      String
+  startTime     DateTime
+  endTime       DateTime?
+  status        EquipmentAssignmentStatus
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum EquipmentAssignmentStatus {
+  ASSIGNED
+  IN_USE
+  RETURNED
+  DAMAGED
+}
+
+// Financial Management
+model Invoice {
+  id            String    @id @default(cuid())
+  contract      Contract  @relation(fields: [contractId], references: [id])
+  contractId    String
+  amount        Float
+  status        InvoiceStatus
+  dueDate       DateTime
+  issuedDate    DateTime  @default(now())
+  paidDate      DateTime?
+  payments      Payment[]
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+model Payment {
+  id            String    @id @default(cuid())
+  invoice       Invoice   @relation(fields: [invoiceId], references: [id])
+  invoiceId     String
+  amount        Float
+  method        PaymentMethod
+  status        PaymentStatus
+  transactionId String?
+  paidDate      DateTime  @default(now())
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  BANK_TRANSFER
+  CHECK
+  CASH
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+// Image Management
+model Image {
+  id            String    @id @default(cuid())
+  url           String
+  type          ImageType
+  area          Area      @relation(fields: [areaId], references: [id])
+  areaId        String
+  description   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum ImageType {
+  BEFORE
+  AFTER
+  ISSUE
+  DOCUMENTATION
 }
