@@ -1,0 +1,90 @@
+&lt;mxfile host="65bd71144e"&gt;
+    &lt;diagram id="data-flow" name="Data Flow Diagram"&gt;
+        &lt;mxGraphModel dx="1386" dy="784" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0"&gt;
+            &lt;root&gt;
+                &lt;mxCell id="0"/&gt;
+                &lt;mxCell id="1" parent="0"/&gt;
+                
+                &lt;!-- External Entities --&gt;
+                &lt;mxCell id="customer" value="Customer" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1"&gt;
+                    &lt;mxGeometry x="40" y="40" width="120" height="60" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;mxCell id="field_worker" value="Field Worker" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1"&gt;
+                    &lt;mxGeometry x="40" y="160" width="120" height="60" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;mxCell id="manager" value="Manager" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1"&gt;
+                    &lt;mxGeometry x="40" y="280" width="120" height="60" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;!-- Processes --&gt;
+                &lt;mxCell id="auth_process" value="Authentication&#10;Process" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1"&gt;
+                    &lt;mxGeometry x="240" y="160" width="120" height="80" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;mxCell id="contract_process" value="Contract&#10;Management" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1"&gt;
+                    &lt;mxGeometry x="440" y="40" width="120" height="80" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;mxCell id="resource_process" value="Resource&#10;Management" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1"&gt;
+                    &lt;mxGeometry x="440" y="160" width="120" height="80" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;mxCell id="scheduling_process" value="Scheduling&#10;Process" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1"&gt;
+                    &lt;mxGeometry x="440" y="280" width="120" height="80" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;!-- Data Stores --&gt;
+                &lt;mxCell id="user_store" value="User Data&#10;(SQLite)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1"&gt;
+                    &lt;mxGeometry x="640" y="160" width="100" height="80" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;mxCell id="session_store" value="Sessions&#10;(Redis)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1"&gt;
+                    &lt;mxGeometry x="640" y="40" width="100" height="80" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;mxCell id="cache_store" value="Cache&#10;(Redis)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1"&gt;
+                    &lt;mxGeometry x="640" y="280" width="100" height="80" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;!-- Data Flows --&gt;
+                &lt;mxCell id="customer_auth" value="Login" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="customer" target="auth_process"&gt;
+                    &lt;mxGeometry relative="1" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;mxCell id="field_auth" value="Login" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="field_worker" target="auth_process"&gt;
+                    &lt;mxGeometry relative="1" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;mxCell id="manager_auth" value="Login" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="manager" target="auth_process"&gt;
+                    &lt;mxGeometry relative="1" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;mxCell id="auth_session" value="Store Session" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="auth_process" target="session_store"&gt;
+                    &lt;mxGeometry relative="1" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;mxCell id="auth_user" value="Validate User" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="auth_process" target="user_store"&gt;
+                    &lt;mxGeometry relative="1" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;mxCell id="process_cache" value="Cache Data" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="resource_process" target="cache_store"&gt;
+                    &lt;mxGeometry relative="1" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;mxCell id="customer_contract" value="Request Service" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="customer" target="contract_process"&gt;
+                    &lt;mxGeometry relative="1" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;mxCell id="manager_schedule" value="Manage Schedule" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="manager" target="scheduling_process"&gt;
+                    &lt;mxGeometry relative="1" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+                
+                &lt;mxCell id="field_resource" value="Update Status" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="field_worker" target="resource_process"&gt;
+                    &lt;mxGeometry relative="1" as="geometry"/&gt;
+                &lt;/mxCell&gt;
+            &lt;/root&gt;
+        &lt;/mxGraphModel&gt;
+    &lt;/diagram&gt;
+&lt;/mxfile&gt;

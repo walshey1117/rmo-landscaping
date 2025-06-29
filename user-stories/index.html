@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RMO Landscaping - User Story Board</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>RMO Landscaping User Stories</h1>
+        <div class="filters">
+            <select id="epicFilter">
+                <option value="all">All Epics</option>
+            </select>
+            <select id="priorityFilter">
+                <option value="all">All Priorities</option>
+                <option value="High">High Priority</option>
+                <option value="Medium">Medium Priority</option>
+                <option value="Low">Low Priority</option>
+            </select>
+        </div>
+    </header>
+
+    <main class="board">
+        <div class="column" id="todo">
+            <h2>To Do</h2>
+            <div class="story-list"></div>
+        </div>
+        <div class="column" id="in-progress">
+            <h2>In Progress</h2>
+            <div class="story-list"></div>
+        </div>
+        <div class="column" id="blocked">
+            <h2>Blocked</h2>
+            <div class="story-list"></div>
+        </div>
+        <div class="column" id="complete">
+            <h2>Complete</h2>
+            <div class="story-list"></div>
+        </div>
+    </main>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-title"></h2>
+            <div id="modal-description"></div>
+            <div id="modal-acceptance"></div>
+            <div class="modal-footer">
+                <select id="status-change">
+                    <option value="todo">To Do</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="blocked">Blocked</option>
+                    <option value="complete">Complete</option>
+                </select>
+                <button id="save-status">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+{
+  "epics": [
+    {
+      "id": "AUTH",
+      "title": "Authentication & Authorization",
+      "stories": [
+        {
+          "id": "AUTH-1",
+          "title": "User Registration",
+          "description": "As a new user, I want to register an account so that I can access the system",
+          "acceptance": [
+            "Support registration with email/password",
+            "Validate email format and password strength",
+            "Send verification email",
+            "Store user data securely",
+            "Handle duplicate email addresses"
+          ],
+          "points": 5,
+          "priority": "High",
+          "status": "todo"
+        },
+        {
+          "id": "AUTH-2",
+          "title": "User Login",
+          "description": "As a registered user, I want to log in to access my account",
+          "acceptance": [
+            "Support email/password login",
+            "Implement JWT authentication",
+            "Store session in Redis",
+            "Handle invalid credentials",
+            "Implement rate limiting"
+          ],
+          "points": 3,
+          "priority": "High",
+          "status": "todo"
+        },
+        {
+          "id": "AUTH-3",
+          "title": "Role-Based Access Control",
+          "description": "As an admin, I want to manage user roles and permissions",
+          "acceptance": [
+            "Define role hierarchy",
+            "Implement permission checks",
+            "Create role management UI",
+            "Audit role changes",
+            "Support role inheritance"
+          ],
+          "points": 8,
+          "priority": "High",
+          "status": "todo"
+        }
+      ]
+    },
+    {
+      "id": "CONTRACT",
+      "title": "Contract Management",
+      "stories": [
+        {
+          "id": "CONTRACT-1",
+          "title": "Contract Creation",
+          "description": "As a manager, I want to create new service contracts",
+          "acceptance": [
+            "Create contract form with validation",
+            "Support multiple service types",
+            "Calculate pricing",
+            "Generate contract document",
+            "Send notifications"
+          ],
+          "points": 8,
+          "priority": "High",
+          "status": "todo"
+        },
+        {
+          "id": "CONTRACT-2",
+          "title": "Contract Approval",
+          "description": "As a customer, I want to review and approve contracts",
+          "acceptance": [
+            "View contract details",
+            "Support digital signatures",
+            "Send approval notifications",
+            "Store approval history",
+            "Handle rejections"
+          ],
+          "points": 5,
+          "priority": "High",
+          "status": "todo"
+        }
+      ]
+    },
+    {
+      "id": "SCHEDULE",
+      "title": "Scheduling Management",
+      "stories": [
+        {
+          "id": "SCHEDULE-1",
+          "title": "Service Scheduling",
+          "description": "As a manager, I want to schedule service visits",
+          "acceptance": [
+            "Create visual calendar interface",
+            "Check resource availability",
+            "Handle scheduling conflicts",
+            "Send schedule notifications",
+            "Support recurring schedules"
+          ],
+          "points": 13,
+          "priority": "High",
+          "status": "todo"
+        },
+        {
+          "id": "SCHEDULE-2",
+          "title": "Schedule Updates",
+          "description": "As a field worker, I want to update service status",
+          "acceptance": [
+            "Mark tasks as complete",
+            "Add service notes",
+            "Upload photos",
+            "Track time spent",
+            "Handle schedule delays"
+          ],
+          "points": 8,
+          "priority": "Medium",
+          "status": "todo"
+        }
+      ]
+    },
+    {
+      "id": "RESOURCE",
+      "title": "Resource Management",
+      "stories": [
+        {
+          "id": "RESOURCE-1",
+          "title": "Resource Allocation",
+          "description": "As a manager, I want to allocate resources to services",
+          "acceptance": [
+            "View resource availability",
+            "Assign workers to tasks",
+            "Track equipment usage",
+            "Handle resource conflicts",
+            "Support resource scheduling"
+          ],
+          "points": 8,
+          "priority": "High",
+          "status": "todo"
+        },
+        {
+          "id": "RESOURCE-2",
+          "title": "Resource Maintenance",
+          "description": "As a manager, I want to track resource maintenance",
+          "acceptance": [
+            "Schedule maintenance tasks",
+            "Track maintenance history",
+            "Set maintenance alerts",
+            "Track maintenance costs",
+            "Generate maintenance reports"
+          ],
+          "points": 5,
+          "priority": "Medium",
+          "status": "todo"
+        }
+      ]
+    },
+    {
+      "id": "REPORT",
+      "title": "Reporting & Analytics",
+      "stories": [
+        {
+          "id": "REPORT-1",
+          "title": "Service Reports",
+          "description": "As a manager, I want to generate service reports",
+          "acceptance": [
+            "Create report templates",
+            "Generate PDF reports",
+            "Include service metrics",
+            "Support date ranges",
+            "Export to multiple formats"
+          ],
+          "points": 5,
+          "priority": "Medium",
+          "status": "todo"
+        },
+        {
+          "id": "REPORT-2",
+          "title": "Analytics Dashboard",
+          "description": "As a manager, I want to view business analytics",
+          "acceptance": [
+            "Create visual dashboards",
+            "Show key metrics",
+            "Support data filtering",
+            "Enable data export",
+            "Real-time updates"
+          ],
+          "points": 8,
+          "priority": "Medium",
+          "status": "todo"
+        }
+      ]
+    }
+  ]
+}

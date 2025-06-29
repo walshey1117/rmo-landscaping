@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2025-06-29T00:00:00.000Z" agent="AI Generated" version="21.5.2" type="device">
+  <diagram id="RMO_Landscaping_ERD" name="RMO Landscaping ERD">
+    <mxGraphModel dx="1500" dy="1500" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="#ffffff">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <!-- User Entity -->
+        <mxCell id="user_entity" value="User&#10;--&#10;id: UUID [PK]&#10;email: String [unique]&#10;password: String (hashed)&#10;firstName: String&#10;lastName: String&#10;role: Enum&#10;createdAt: DateTime&#10;updatedAt: DateTime&#10;lastLogin: DateTime?&#10;isActive: Boolean" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=200;fillColor=#e1d5e7;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="200" height="200" as="geometry"/>
+        </mxCell>
+        <!-- Contract Entity -->
+        <mxCell id="contract_entity" value="Contract&#10;--&#10;id: UUID [PK]&#10;type: Enum&#10;clientId: UUID [FK]&#10;status: Enum&#10;startDate: DateTime&#10;endDate: DateTime?&#10;totalValue: Decimal&#10;paymentTerms: String&#10;createdAt: DateTime&#10;updatedAt: DateTime&#10;createdById: UUID [FK]" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=200;fillColor=#dae8fc;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="320" y="40" width="200" height="200" as="geometry"/>
+        </mxCell>
+        <!-- Area Entity -->
+        <mxCell id="area_entity" value="Area&#10;--&#10;id: UUID [PK]&#10;name: String&#10;description: String&#10;size: Decimal&#10;unit: String&#10;location: GeoJSON&#10;mapId: UUID [FK]&#10;createdAt: DateTime&#10;updatedAt: DateTime" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=180;fillColor=#d5e8d4;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="600" y="40" width="200" height="180" as="geometry"/>
+        </mxCell>
+        <!-- MaintenanceType Entity -->
+        <mxCell id="maintenance_type_entity" value="MaintenanceType&#10;--&#10;id: UUID [PK]&#10;name: String&#10;description: String&#10;frequency: Integer&#10;frequencyUnit: Enum&#10;defaultCost: Decimal&#10;equipmentNeeded: JSON&#10;workersNeeded: Integer&#10;estimatedDuration: Integer&#10;createdAt: DateTime&#10;updatedAt: DateTime" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=220;fillColor=#fff2cc;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="40" y="280" width="200" height="220" as="geometry"/>
+        </mxCell>
+        <!-- Relationships -->
+        <mxCell id="user_contract" value="" style="endArrow=ERmany;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endFill=0;" edge="1" parent="1" source="user_entity" target="contract_entity">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- Add more entities and relationships as needed -->
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

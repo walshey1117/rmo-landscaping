@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2025-06-29T00:00:00.000Z" agent="AI Generated" version="21.5.2" type="device">
+  <diagram id="Contract_Creation_Sequence" name="Contract Creation Sequence">
+    <mxGraphModel dx="1500" dy="1500" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="#ffffff">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <!-- Actors and Systems -->
+        <mxCell id="manager" value="Manager" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="20" width="30" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="ui" value="UI" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="200" y="30" width="100" height="40" as="geometry"/>
+        </mxCell>
+        <!-- Add more sequence elements -->
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
