@@ -5,7 +5,7 @@
 ### 1.1 Development Environment
 - Local development using Docker
 - Hot reloading enabled
-- Local SQLite database
+- Local PostgreSQL database
 - Redis cache container
 - Mock external services
 
@@ -30,7 +30,7 @@
 - Health monitoring
 
 ### 2.2 Database & Caching
-- Primary SQLite database
+- Primary PostgreSQL database
 - Redis caching layer
   - Session management
   - API response caching

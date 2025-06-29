@@ -124,7 +124,7 @@
 ### 5.2 Backend
 - Node.js
 - TypeScript
-- SQLite
+- PostgreSQL
 - Redis
 - Winston
 - NextAuth.js

@@ -10,7 +10,7 @@
   - ESLint
   - Prettier
   - TypeScript and JavaScript tools
-  - SQLite Viewer
+  - pgAdmin or DBeaver (PostgreSQL client)
 
 ## Initial Setup
 
@@ -178,7 +178,7 @@ docker logs rmo-redis
 
 2. Database Issues
 ```bash
-# Check SQLite file
+# Check PostgreSQL Database
 ls -l prisma/dev.db
 # Check migrations
 npm run db:migrations:list

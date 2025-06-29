@@ -16,7 +16,7 @@
 - **Use TypeScript** for type safety and maintainability.
 - **Use Next.js** for the web application framework.
 - **Use Node.js** as the runtime environment.
-- **Use SQLite** as the database.
+- **Use PostgreSQL** as the database.
 - **Use Swagger** (OpenAPI) for API documentation and to keep docs in sync with implementation.
 - **Use environment variables** for configuration (e.g., database connection, secrets).
 - **Apply consistent code formatting** (e.g., Prettier, ESLint).

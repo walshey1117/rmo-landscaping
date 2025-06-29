@@ -1,6 +1,6 @@
 // This is your Prisma schema file
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -12,17 +12,17 @@ generator client {
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
-  name          String?   @db.Text
+  name          String?
   password      String
   role          UserRole
   phone         String?
   address       Address?
   company       String?   // For business customers
-  notes         String?   @db.Text
-  preferences   Json?     // For notifications, communication preferences
+  notes         String?
+  preferences   String?   // JSON string for notifications, communication preferences
   active        Boolean   @default(true)
-  createdAt     DateTime  @default(now()) @db.Timestamp
-  updatedAt     DateTime  @updatedAt @db.Timestamp
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   contracts     Contract[]
   assignments   Assignment[]
   equipmentAssignments EquipmentAssignment[]
@@ -46,16 +46,16 @@ model Contract {
   customerId  String
   customer    User      @relation(fields: [customerId], references: [id])
   status      ContractStatus
-  startDate   DateTime  @db.Timestamp
-  endDate     DateTime? @db.Timestamp
-  totalValue  Float     @db.Decimal(10, 2)
+  startDate   DateTime
+  endDate     DateTime?
+  totalValue  Float
   services    Service[]
   invoices    Invoice[]
-  terms       String?   @db.Text
-  notes       String?   @db.Text
-  documents   Json?     // Store document references/metadata
-  createdAt   DateTime  @default(now()) @db.Timestamp
-  updatedAt   DateTime  @updatedAt @db.Timestamp
+  terms       String?
+  notes       String?
+  documents   String?   // JSON string for document references/metadata
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([customerId])
   @@index([status])
@@ -77,15 +77,15 @@ model Service {
   contract    Contract  @relation(fields: [contractId], references: [id])
   type        ServiceType
   frequency   ServiceFrequency
-  price       Float     @db.Decimal(10, 2)
-  description String    @db.Text
+  price       Float
+  description String
   area        Area      @relation(fields: [areaId], references: [id])
   areaId      String
   estimatedDuration Int // in minutes
   equipmentNeeded Equipment[]
   schedules   Schedule[]
-  createdAt   DateTime  @default(now()) @db.Timestamp
-  updatedAt   DateTime  @updatedAt @db.Timestamp
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([contractId])
   @@index([type])
@@ -114,12 +114,12 @@ model Schedule {
   id          String    @id @default(cuid())
   serviceId   String
   service     Service   @relation(fields: [serviceId], references: [id])
-  date        DateTime  @db.Timestamp
+  date        DateTime
   status      ScheduleStatus
-  notes       String?   @db.Text
+  notes       String?
   assignments Assignment[]
-  createdAt   DateTime  @default(now()) @db.Timestamp
-  updatedAt   DateTime  @updatedAt @db.Timestamp
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([serviceId])
   @@index([date])

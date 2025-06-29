@@ -36,7 +36,7 @@
                 &lt;/mxCell&gt;
                 
                 &lt;!-- Data Stores --&gt;
-                &lt;mxCell id="user_store" value="User Data&#10;(SQLite)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1"&gt;
+                &lt;mxCell id="user_store" value="User Data&#10;(PostgreSQL)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1"&gt;
                     &lt;mxGeometry x="640" y="160" width="100" height="80" as="geometry"/&gt;
                 &lt;/mxCell&gt;
                 

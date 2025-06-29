@@ -15,7 +15,7 @@
   - Map Integration
 
 ### 1.2 Technology Stack
-> **Reasoning**: The chosen stack optimizes for developer productivity, type safety, and modern web capabilities. Next.js 13+ with App Router provides excellent routing, server components, and built-in optimizations. TypeScript ensures code reliability, SQLite offers simplicity in setup and maintenance for the initial phase, Redis provides high-performance caching and real-time capabilities, and NextAuth.js with JWT provides secure, flexible authentication.
+> **Reasoning**: The chosen stack optimizes for developer productivity, type safety, and modern web capabilities. Next.js 13+ with App Router provides excellent routing, server components, and built-in optimizations. TypeScript ensures code reliability, PostgreSQL provides robust relational database capabilities with excellent scalability, Redis provides high-performance caching and real-time capabilities, and NextAuth.js with JWT provides secure, flexible authentication.
 - **Frontend**: 
   - Next.js 13+ with App Router
   - React Server Components
@@ -25,7 +25,7 @@
   - NextAuth.js for authentication
   - Redis for caching and real-time data
 - **Database**: 
-  - SQLite for persistent storage
+  - PostgreSQL for persistent storage
   - Redis for caching layer
 - **API Documentation**: Swagger/OpenAPI
 - **Authentication & Authorization**: 
@@ -230,10 +230,10 @@
   - Cluster management
 
 ## 3. Data Layer
-> **Reasoning**: The data layer combines SQLite for persistent storage with Redis for caching to optimize performance and scalability. This hybrid approach provides the simplicity of SQLite with the high-performance capabilities of Redis.
+> **Reasoning**: The data layer combines PostgreSQL for persistent storage with Redis for caching to optimize performance and scalability. This hybrid approach provides the robustness and scalability of PostgreSQL with the high-performance capabilities of Redis.
 
 ### 3.1 Database Schema
-> **Reasoning**: The database schema is designed to support the domain model while maintaining data integrity through proper relationships. Using SQLite initially provides simplicity and easy deployment, with the option to migrate to a more robust solution like PostgreSQL when needed.
+> **Reasoning**: The database schema is designed to support the domain model while maintaining data integrity through proper relationships. PostgreSQL provides robust relational database capabilities, excellent performance, and strong data integrity guarantees, making it an ideal choice for our application's needs.
 
 ### 3.2 Cache Schema
 > **Reasoning**: The cache schema is structured to optimize read performance and support real-time features while maintaining data consistency with the primary database.
